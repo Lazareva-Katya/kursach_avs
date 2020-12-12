@@ -61,6 +61,7 @@ private:
     void clock_bp( Cycle cycle);
     void clock_instr_cache( Cycle cycle);
     void save_flush( Cycle cycle);
+    void next_line_prefetch(Target target);
 };
 
 #endif

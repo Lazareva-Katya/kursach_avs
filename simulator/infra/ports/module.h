@@ -19,6 +19,8 @@ class Module : public Log
 {
 public:
     Module( Module* parent, std::string name);
+    void switcher(bool key);
+    bool indicator();
 
 protected:
     template<typename T>
@@ -44,6 +46,7 @@ protected:
 
 private:
     // NOLINTNEXTLINE(misc-no-recursion) Recursive, but must be finite
+    bool flag;
     virtual std::shared_ptr<PortMap> get_portmap() const { return parent->get_portmap(); }
     void force_enable_logging();
     void force_disable_logging();

@@ -141,6 +141,11 @@ Target Fetch<FuncInstr>::get_cached_target( Cycle cycle)
 
     /* getting PC */
     auto target = get_target( cycle);
+    bool flag = indicator();
+
+    if(flag == true){
+        next_line_prefetch(target);
+    }
 
     /* push bubble */
     if ( !target.valid)
@@ -188,6 +193,23 @@ void Fetch<FuncInstr>::clock( Cycle cycle)
 
     /* sending to decode */
     wp_datapath->write( std::move( instr), cycle);
+}
+
+template <typename FuncInstr>
+void Fetch<FuncInstr>::next_line_prefetch(Target target) {
+    const uint32 size = config::instruction_cache_line_size;
+    const uint32 count = 1; // use it to prove that the speed wont improve with a prefetch greater than 1 line
+    const uint32 distance = size / 4;
+    const size_t bits = std::countr_zero(size);
+    const Addr mask = bitmask<Addr>(bits);
+    bool is_incache = false;
+    Addr offset = target.address & mask;
+    for(uint32 i = 1; i <= count; i++){
+        Addr next_addr = i * size + target.address;
+        if(tags->lookup(next_addr)){is_incache = true;}
+        else {is_incache = false;}
+        if(is_incache == false && distance < offset){tags->write(next_addr);}
+    }
 }
 
 #include <mips/mips.h>

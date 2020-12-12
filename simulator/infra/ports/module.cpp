@@ -20,6 +20,16 @@ Module::Module( Module* parent, std::string name)
         parent->add_child( this);
 }
 
+void Module::switcher(bool key) {
+    flag = key;
+    for( const auto& c : children )
+        c->switcher(key);
+}
+
+bool Module::indicator() {
+    return flag;
+}
+
 // NOLINTNEXTLINE(misc-no-recursion) Recursive, but must be finite
 void Module::force_enable_logging()
 {  

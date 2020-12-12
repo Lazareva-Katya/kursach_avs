@@ -13,6 +13,7 @@
 namespace config {
     static const AliasedValue<std::string> units_to_log = { "l", "logs", "nothing", "print logs for modules"};
     static const Switch topology_dump = { "tdump", "module topology dump into topology.json" };
+    static const AliasedSwitch next_line = {"p","prefetch","using next line prefetch"};
 } // namespace config
 
 template <typename ISA>
@@ -30,6 +31,7 @@ PerfSim<ISA>::PerfSim( std::endian endian, std::string_view isa)
     set_writeback_bandwidth( Port::BW);
 
     init_portmap();
+    switcher(config::next_line);
     enable_logging( config::units_to_log);
     topology_dumping( config::topology_dump, "topology.json");
 }
