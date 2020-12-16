@@ -116,7 +116,7 @@ void Decode<FuncInstr>::clock( Cycle cycle)
             wp_flush_fetch->write( true, cycle);
 
         /* sending valid PC to fetch stage */
-        if ( !from_stall || instr.is_jump())
+        if ( !from_stall)
         {
             wp_flush_target->write( instr.get_actual_decoded_target(), cycle);
             sout << "\nmisprediction on ";
