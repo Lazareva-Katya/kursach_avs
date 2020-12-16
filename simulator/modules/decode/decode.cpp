@@ -6,6 +6,7 @@
 #include "decode.h"
 
 #include <modules/execute/execute.h>
+#include <modules/fetch/fetch.h>
 
 template <typename FuncInstr>
 Decode<FuncInstr>::Decode( Module* parent) : Module( parent, "decode")
@@ -115,7 +116,7 @@ void Decode<FuncInstr>::clock( Cycle cycle)
             wp_flush_fetch->write( true, cycle);
 
         /* sending valid PC to fetch stage */
-        if ( !from_stall)
+        if ( !from_stall || instr.is_jump())
         {
             wp_flush_target->write( instr.get_actual_decoded_target(), cycle);
             sout << "\nmisprediction on ";

@@ -13,7 +13,7 @@
 namespace config {
     static const AliasedValue<std::string> units_to_log = { "l", "logs", "nothing", "print logs for modules"};
     static const Switch topology_dump = { "tdump", "module topology dump into topology.json" };
-    static const AliasedSwitch next_line = {"p","prefetch","using next line prefetch"};
+    static const AliasedSwitch wrong_path = {"p","prefetch","using wrong path prefetch"};
 } // namespace config
 
 template <typename ISA>
@@ -31,7 +31,7 @@ PerfSim<ISA>::PerfSim( std::endian endian, std::string_view isa)
     set_writeback_bandwidth( Port::BW);
 
     init_portmap();
-    switcher(config::next_line);
+    switcher(config::wrong_path);
     enable_logging( config::units_to_log);
     topology_dumping( config::topology_dump, "topology.json");
 }
@@ -112,9 +112,12 @@ void PerfSim<ISA>::dump_statistics() const
     auto simips = executed_instrs / time;
     auto decode_mispredict_rate = 1.0 * get_rate( decode.get_jumps_num(), decode.get_mispredictions_num());
     auto branch_mispredict_rate = 1.0 * get_rate( branch.get_jumps_num(), branch.get_mispredictions_num());
-    
-    std::cout << std::endl << "****************************"
-              << std::endl << "instrs:     " << executed_instrs
+
+    std::cout << std::endl << "***************************************************";
+
+    indicator() != true ? std::cout << std::endl << "Program without cache prefetching" :
+    std::cout << std::endl << "Program with Wrong Path cache prefetching" << std::endl;
+    std::cout << std::endl << "instrs:     " << executed_instrs
               << std::endl << "cycles:     " << curr_cycle
               << std::endl << "IPC:        " << ipc
               << std::endl << "sim freq:   " << frequency << " kHz"
@@ -122,7 +125,7 @@ void PerfSim<ISA>::dump_statistics() const
               << std::endl << "instr size: " << sizeof(Instr) << " bytes"
               << std::endl << "mispredict: detected on decode stage - " << decode_mispredict_rate << "%"
               << std::endl << "            detected on branch stage - " << branch_mispredict_rate << "%"
-              << std::endl << "****************************"
+              << std::endl << "***************************************************"
               << std::endl;
 }
 

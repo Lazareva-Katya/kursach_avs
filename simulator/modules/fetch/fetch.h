@@ -19,6 +19,7 @@ class Fetch : public Module
     using Instr = PerfInstr<FuncInstr>;
 
 public:
+    bool check;
     explicit Fetch( Module* parent);
     void clock( Cycle cycle);
     void set_memory( std::unique_ptr<InstrMemoryIface<FuncInstr>> mem)

@@ -75,7 +75,11 @@ Target Fetch<FuncInstr>::get_target( Cycle cycle)
         return flushed_target;
 
     if( flushed_target_from_decode.valid)
+    {
+        check = true;
         return flushed_target_from_decode;
+    }
+
 
     if ( !is_stall && branch_target.valid)
         return branch_target;
@@ -143,13 +147,22 @@ Target Fetch<FuncInstr>::get_cached_target( Cycle cycle)
     auto target = get_target( cycle);
     bool flag = indicator();
 
-    if(flag == true){
-        next_line_prefetch(target);
-    }
-
     /* push bubble */
     if ( !target.valid)
         return Target();
+
+    if (check == true)
+    {
+        Addr addr = target.address;
+        tags->write(addr);
+        check = false;
+    }
+    else
+    {
+        if(flag == true){
+            next_line_prefetch(target);
+        }
+    }
 
     /* hit or miss */
     auto is_hit = tags->lookup( target.address);
@@ -197,6 +210,7 @@ void Fetch<FuncInstr>::clock( Cycle cycle)
 
 template <typename FuncInstr>
 void Fetch<FuncInstr>::next_line_prefetch(Target target) {
+
     const uint32 size = config::instruction_cache_line_size;
     const uint32 count = 1; // use it to prove that the speed wont improve with a prefetch greater than 1 line
     const uint32 distance = size / 4;

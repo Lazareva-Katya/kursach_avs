@@ -20,7 +20,7 @@ class Module : public Log
 public:
     Module( Module* parent, std::string name);
     void switcher(bool key);
-    bool indicator();
+    bool indicator() const;
 
 protected:
     template<typename T>

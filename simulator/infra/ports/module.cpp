@@ -26,7 +26,7 @@ void Module::switcher(bool key) {
         c->switcher(key);
 }
 
-bool Module::indicator() {
+bool Module::indicator() const{
     return flag;
 }
 
