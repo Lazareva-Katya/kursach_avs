@@ -7,8 +7,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6083942-bcc8-4749-ac78-803687ecac8c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulator/modules/core/perf_sim.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/modules/core/perf_sim.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulator/modules/fetch/fetch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/modules/fetch/fetch.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulator/modules/fetch/fetch.h" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/modules/fetch/fetch.h" afterDir="false" />
     </list>
@@ -45,7 +43,7 @@
       <option name="presentableId" value="Default" />
       <updated>1607737811920</updated>
       <workItem from="1607737813337" duration="2408000" />
-      <workItem from="1608129179498" duration="10060000" />
+      <workItem from="1608129179498" duration="10816000" />
     </task>
     <servers />
   </component>

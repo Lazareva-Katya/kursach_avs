@@ -76,8 +76,12 @@ Target Fetch<FuncInstr>::get_target( Cycle cycle)
 
     if( flushed_target_from_decode.valid)
     {
-        condition = change();
+        condition = true;
         return flushed_target_from_decode;
+    }
+    else
+    {
+        condition = false;
     }
 
     if ( !is_stall && branch_target.valid)
@@ -227,11 +231,6 @@ bool Fetch<FuncInstr>::wrong_path(Target target) {
         tags->write(addr);
         return false;
     }
-    return true;
-}
-
-template <typename FuncInstr>
-bool Fetch<FuncInstr>::change() {
     return true;
 }
 

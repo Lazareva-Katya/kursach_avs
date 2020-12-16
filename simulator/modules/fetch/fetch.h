@@ -64,7 +64,6 @@ private:
     void save_flush( Cycle cycle);
     void next_line_prefetch(Target target);
     bool wrong_path(Target target);
-    bool change();
 };
 
 #endif
