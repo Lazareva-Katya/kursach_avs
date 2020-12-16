@@ -76,10 +76,9 @@ Target Fetch<FuncInstr>::get_target( Cycle cycle)
 
     if( flushed_target_from_decode.valid)
     {
-        check = true;
+        condition = change();
         return flushed_target_from_decode;
     }
-
 
     if ( !is_stall && branch_target.valid)
         return branch_target;
@@ -145,7 +144,7 @@ Target Fetch<FuncInstr>::get_cached_target( Cycle cycle)
 
     /* getting PC */
     auto target = get_target( cycle);
-    bool flag = indicator();
+    bool check = indicator();
 
     /* push bubble */
     if ( !target.valid)
@@ -153,12 +152,7 @@ Target Fetch<FuncInstr>::get_cached_target( Cycle cycle)
 
     if (check == true)
     {
-        Addr addr = target.address;
-        tags->write(addr);
-        check = false;
-    }
-    else
-    {
+        bool flag = wrong_path(target);
         if(flag == true){
             next_line_prefetch(target);
         }
@@ -224,6 +218,21 @@ void Fetch<FuncInstr>::next_line_prefetch(Target target) {
         else {is_incache = false;}
         if(is_incache == false && distance < offset){tags->write(next_addr);}
     }
+}
+
+template <typename FuncInstr>
+bool Fetch<FuncInstr>::wrong_path(Target target) {
+    if(condition == true){
+        Addr addr = target.address;
+        tags->write(addr);
+        return false;
+    }
+    return true;
+}
+
+template <typename FuncInstr>
+bool Fetch<FuncInstr>::change() {
+    return true;
 }
 
 #include <mips/mips.h>

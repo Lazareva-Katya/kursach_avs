@@ -19,7 +19,7 @@ class Fetch : public Module
     using Instr = PerfInstr<FuncInstr>;
 
 public:
-    bool check;
+    bool condition;
     explicit Fetch( Module* parent);
     void clock( Cycle cycle);
     void set_memory( std::unique_ptr<InstrMemoryIface<FuncInstr>> mem)
@@ -63,6 +63,8 @@ private:
     void clock_instr_cache( Cycle cycle);
     void save_flush( Cycle cycle);
     void next_line_prefetch(Target target);
+    bool wrong_path(Target target);
+    bool change();
 };
 
 #endif
